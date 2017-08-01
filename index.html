@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<<link rel="stylesheet" href="GifStatic.css">
+	<meta charset="UTF-8">
+	<title>GifStatic</title>
+<h1><strong>My Cool Weapons...</strong></h1>
+</head>
+<body>
+
+<!--buttons-->
+<div id = "buttons-view">
+
+</div>
+
+<!--javascript-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+  var army;
+  var topics = "army";
+  var dataState;
+  var still;
+  var animate;
+  var army;
+  var armyArray =["knife", "gun", "granade", "short Sword", "rifle", " katana", "claymore", "sword", "butterfly Knife", "longSword", "pirateSword", "rapier", "viking Sword", "gladious Sword", "Bow and Arrow", "cannon", "axe", "battle axe", "shotGun", "battle Rifle", "automatic gunshot"];
+ 	 
+   
+  	
+ 
+
+
+function displayarmyInfo(search) {
+
+  	 var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+        army + "&api_key=9989e9ec971746e8892ed03b5c4a04e2";
+
+	console.log("army");
+	$.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+.done(function(response) {
+var results = response.data;
+
+for (var i = 0; i < results.length; i++) {
+	if (results[i].rating !== "r" && results[i].rating !== "pg-13") 
+	{
+var gifDiv = $("<div class='item'>");
+ var rating = results[i].rating;
+var p = $("<p>").text("Rating: " + rating);
+  var armyImage = $("<img>");
+armyImage.attr("src", results[i].images.fixed_height.url);
+armyImage.attr("data-state", "still");
+gifDiv.append(p);
+gifDiv.append(armyImage);
+
+ $("#gifs-appear-here").prepend(gifDiv);
+
+            }
+          }
+        });
+    
+};
+ 		
+$(".armyButton").on("click", function() {
+	console.log("click")
+  	army = $(this).attr("data-name");
+	displayarmyInfo(army);
+
+	});
+
+
+
+function renderButtons() {
+ $("#buttons-view").empty();
+  for (var i = 0; i < armyArray.length; i++) {
+ var a = $("<button>");
+          a.addClass("armyButton");
+          a.attr("data-name", armyArray[i]);
+          a.text(armyArray[i]);
+         
+          $("#buttons-view").append(a);
+}};
+
+
+
+<!--state-->
+ $(".gif").on("click", function() {
+var state = $(this).attr("data-state");
+if (state === "still") {
+	console.log(still);
+        $(this).attr("img", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("img", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }});
+ // $(document).on("click", ".gif", function() {...});
+
+<!--add buttons-->
+
+// $("#add-army").on("click", function(event) {
+//         event.preventDefault();
+// var army = $("#army-input").val().trim();
+// army.push(army);
+// console.log(army)
+// renderButtons();
+//       });
+$(document).on("click", ".armyButton", displayarmyInfo);
+renderButtons();
+
+
+
+
+</script>
+</body>
+</html>
